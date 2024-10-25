@@ -7,6 +7,7 @@ import tech.ada.farchettiensis.booksapi.model.Book;
 import tech.ada.farchettiensis.booksapi.service.BookService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/books")
@@ -23,6 +24,13 @@ public class BookController {
         Book createdBook = bookService.createBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<List<Book>> createBooks(@RequestBody List<Book> books) {
+        List<Book> createdBooks = bookService.createBooks(books);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBooks);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
@@ -46,5 +54,12 @@ public class BookController {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Book> patchBook(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+        Book updatedBook = bookService.patchBook(id, updates);
+        return ResponseEntity.ok(updatedBook);
+    }
+
 }
 
